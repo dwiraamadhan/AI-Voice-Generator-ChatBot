@@ -1,0 +1,37 @@
+.AudioRecorder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  border: 1px solid #ccc;
+  border-radius: 40px;
+  background-color: #f0f0f0;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+}
+
+.startRecord {
+  height: 2.5rem; /* h-8 -> Setting tinggi tombol menjadi 2 rem */
+  width: 2.5rem; /* w-8 -> Setting lebar tombol menjadi 2 rem */
+  border-radius: 50%; /* rounded-full -> Membuat border-radius menjadi setengah dari lebar/tinggi tombol */
+  border-width: 4px; /* border-4 -> Set border-width menjadi 4px */
+  border-color: #ccc; /* border-gray-400 -> Set border-color menjadi abu-abu (#ccc) */
+  border-style: solid; /* Menetapkan border style ke solid */
+}
+
+.stopRecord {
+  height: 2.5rem; /* h-8 -> Setting tinggi tombol menjadi 2.5 rem */
+  width: 2.5rem; /* w-8 -> Setting lebar tombol menjadi 2.5 rem */
+  border-radius: 50%; /* rounded-full -> Membuat border-radius menjadi setengah dari lebar/tinggi tombol */
+  border-width: 4px; /* border-4 -> Set border-width menjadi 4px */
+  border-color: #dc2626; /* border-gray-400 -> Set border-color menjadi abu-abu (#ccc) */
+  border-style: solid; /* Menetapkan border style ke solid */
+  color: #dc2626;
+}
+
+.submit {
+  padding: 4px;
+  margin: 10px;
+}

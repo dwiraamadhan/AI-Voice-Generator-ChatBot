@@ -70,5 +70,43 @@
   color: #edf2f7; /* dark:text-gray-200 */
   margin-bottom: 15px;
   margin-left: 10px;
+  margin-right: 3px;
+}
+
+.button-send {
+  background-color: #48bb78;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: #ffffff;
+  margin-left: 0.5rem;
+  margin-bottom: 15px;
+  margin-right: 5px;
+}
+
+.recorder {
+  margin-left: 0.5rem;
+  margin-bottom: 20px;
   margin-right: 10px;
+}
+
+.startRecord {
+  height: 2.5rem; /* h-8 -> Setting tinggi tombol menjadi 2 rem */
+  width: 2.5rem; /* w-8 -> Setting lebar tombol menjadi 2 rem */
+  border-radius: 50%; /* rounded-full -> Membuat border-radius menjadi setengah dari lebar/tinggi tombol */
+  border-width: 4px; /* border-4 -> Set border-width menjadi 4px */
+  border-color: #ccc; /* border-gray-400 -> Set border-color menjadi abu-abu (#ccc) */
+  border-style: solid; /* Menetapkan border style ke solid */
+}
+
+.stopRecord {
+  height: 2.5rem; /* h-8 -> Setting tinggi tombol menjadi 2.5 rem */
+  width: 2.5rem; /* w-8 -> Setting lebar tombol menjadi 2.5 rem */
+  border-radius: 50%; /* rounded-full -> Membuat border-radius menjadi setengah dari lebar/tinggi tombol */
+  border-width: 4px; /* border-4 -> Set border-width menjadi 4px */
+  border-color: #dc2626; /* border-gray-400 -> Set border-color menjadi abu-abu (#ccc) */
+  border-style: solid; /* Menetapkan border style ke solid */
+  color: #dc2626;
 }

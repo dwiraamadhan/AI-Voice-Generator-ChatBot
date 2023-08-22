@@ -8,7 +8,7 @@ const Mp3Recorder = new MicRecorder({ bitrate: 128 });
 
 function ChatBot() {
   const [input, setInput] = useState("");
-  const [transcriptionText, setTranscriptionText] = useState("");
+  // const [transcriptionText, setTranscriptionText] = useState("");
   const [isBlocked, setIsBlocked] = useState(false);
   const [blobURL, setBlobURL] = useState(null);
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -71,36 +71,6 @@ function ChatBot() {
       })
       .catch((e) => console.log(e));
   };
-
-  // const handleSubmit = async () => {
-  //   if (blobURL) {
-  //     setIsTranscribing(true);
-  //     const formData = new FormData();
-  //     const audioBlob = await fetch(blobURL).then((res) => res.blob());
-  //     formData.append("audio_file", audioBlob, "audio.mp3");
-
-  //     try {
-  //       const response = await axios.post(
-  //         "http://localhost:8000/audio", // Ganti dengan URL endpoint yang sesuai
-  //         formData,
-  //         {
-  //           headers: {
-  //             "Content-Type": "multipart/form-data",
-  //           },
-  //         }
-  //       );
-
-  //       const { transcription } = response.data;
-  //       console.log(transcription);
-  //       setTranscriptionText(transcription);
-  //       console.log("Transcription successful");
-  //     } catch (error) {
-  //       console.error("Upload and transcribe error", error);
-  //     } finally {
-  //       setIsTranscribing(false);
-  //     }
-  //   }
-  // };
 
   const handleSendMessage = () => {
     if (input.trim() !== "") {

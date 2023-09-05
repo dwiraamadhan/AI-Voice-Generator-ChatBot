@@ -8,12 +8,12 @@ const Mp3Recorder = new MicRecorder({ bitrate: 128 });
 
 function ChatBot() {
   const [input, setInput] = useState("");
-  // const [transcriptionText, setTranscriptionText] = useState("");
   const [isBlocked, setIsBlocked] = useState(false);
   const [blobURL, setBlobURL] = useState(null);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -47,7 +47,7 @@ function ChatBot() {
 
         try {
           const response = await axios.post(
-            "http://localhost:8000/audio", // Ganti dengan URL endpoint yang sesuai
+            "http://localhost:8000/audio",
             formData,
             {
               headers: {
@@ -62,6 +62,7 @@ function ChatBot() {
             ...messages,
             { type: "transcription", content: transcription },
           ]);
+          handleBotResponse(transcription);
           console.log("Transcription successful");
         } catch (error) {
           console.error("Upload and transcribe error", error);
@@ -73,9 +74,68 @@ function ChatBot() {
   };
 
   const handleSendMessage = () => {
-    if (input.trim() !== "") {
-      setMessages([...messages, { type: "text", content: input }]);
-      setInput("");
+    setMessages((prevMessage) => [
+      ...prevMessage,
+      { type: "user", content: input },
+    ]);
+    handleBotResponse(input);
+    setInput("");
+  };
+
+  const handleBotResponse = async (message) => {
+    setIsLoading(true);
+    try {
+      const createdAt = new Date().toISOString();
+      const responseBot = await axios.post(
+        "http://localhost:8000/question",
+        { text: message, createdAt },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const { relevant_answer } = responseBot.data;
+      speakResponse(relevant_answer); // Speak the bot's response
+    } catch (error) {
+      console.error("Error fetching bot response", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const speakResponse = async (message) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/text",
+        { text: message[0] },
+        {
+          responseType: "json",
+        }
+      );
+
+      const { base64_audio } = response.data;
+
+      //decode the base64 audio data
+      const audioData = atob(base64_audio);
+
+      //convert the audio data to a Uint8Array
+      const audioArray = new Uint8Array(audioData.length);
+      for (let i = 0; i < audioData.length; i++) {
+        audioArray[i] = audioData.charCodeAt(i);
+      }
+
+      //create a blob from the Uint8array
+      const audioBlob = new Blob([audioArray], { type: "audio/wav" });
+      //create a URL Object for the blob
+      const audioURL = URL.createObjectURL(audioBlob);
+      const messageObject = {
+        type: "bot",
+        content: [
+          { type: "text", value: message },
+          { type: "audio", value: audioURL },
+        ],
+      };
+      setMessages((prevMessage) => [...prevMessage, messageObject]);
+    } catch (error) {
+      console.error("Error in TTS API call", error);
     }
   };
 
@@ -84,16 +144,22 @@ function ChatBot() {
       <div className="container-text">
         {messages.map((message, index) => (
           <div className={`user ${message.type}`} key={index}>
-            <div className="bubble-user">
-              {message.content}
-              {/* {transcriptionText && <p>{transcriptionText}</p>} */}
-            </div>
+            {message.type === "user" || message.type === "transcription" ? (
+              <div className="bubble-user">{message.content}</div>
+            ) : (
+              <div className="bubble-bot">
+                {message.content.map((item, itemIndex) => (
+                  <div key={itemIndex}>
+                    {item.type === "text" && <p>{item.value}</p>}
+                    {item.type === "audio" && (
+                      <audio controls autoPlay={true} src={item.value}></audio>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
-
-        <div className="bot">
-          <div className="bubble-bot">ini contoh bubble bot</div>
-        </div>
       </div>
       <div>
         <div className="form-chat-container">
@@ -117,7 +183,6 @@ function ChatBot() {
                 className="stopRecord"
                 onClick={() => {
                   stopRecording();
-                  // handleSubmit();
                 }}
                 disabled={!isRecording}
               >

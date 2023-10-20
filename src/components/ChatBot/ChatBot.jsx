@@ -93,7 +93,11 @@ function ChatBot() {
       );
 
       const { relevant_answer } = responseBot.data;
-      speakResponse(relevant_answer); // Speak the bot's response
+      if (relevant_answer) {
+        speakResponse(relevant_answer); // Speak the bot's response
+      } else {
+        speakResponse("Sorry i couldn't understand the question");
+      }
     } catch (error) {
       console.error("Error fetching bot response", error);
     } finally {

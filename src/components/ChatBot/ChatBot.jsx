@@ -47,7 +47,7 @@ function ChatBot() {
 
         try {
           const response = await axios.post(
-            "http://localhost:8000/audio",
+            "http://localhost:8000/speech_to_text",
             formData,
             {
               headers: {
@@ -108,8 +108,8 @@ function ChatBot() {
   const speakResponse = async (message) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/text",
-        { text: message[0] },
+        "http://localhost:8000/text_to_speech",
+        { text: message },
         {
           responseType: "json",
         }
